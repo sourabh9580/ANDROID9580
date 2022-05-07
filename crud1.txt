@@ -1,0 +1,195 @@
+/*
+dbhelper
+    @Override
+    public void onCreate(SQLiteDatabase DB) {
+        DB.execSQL("create Table if not exists empdata(empid integer primary key AutoIncrement,empname Text,emp_designation text,emp_phone integer,emp_email Text)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase DB, int i, int i1) {
+        onCreate(DB);
+    }
+
+    public boolean insertempdata(String empname,String emp_Designation,String emp_phone,String emp_email){
+        SQLiteDatabase DB=this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("empname",empname);
+        cv.put("emp_Designation",emp_Designation);
+        cv.put("emp_phone",emp_phone);
+        cv.put("emp_email",emp_email);
+        long result=DB.insert("empdata",null,cv);
+        if (result==-1){
+            return false;
+        }
+        return true;
+
+    }
+
+    public Cursor viewdata(){
+        SQLiteDatabase DB= this.getWritableDatabase();
+        Cursor cursor=DB.rawQuery("select * from empdata",null);
+        return cursor;
+    }
+    public Cursor searchdata(String empid){
+        SQLiteDatabase DB=this.getWritableDatabase();
+        Cursor cursor= DB.rawQuery("select * from empdata where empid=?",new String[]{empid});
+        return cursor;
+    }
+}
+
+main activity:
+ListView crudlist;
+    ArrayList<String> crud;
+    ArrayAdapter<String> adapter;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        getSupportActionBar().setTitle("Crud");
+
+        crudlist =findViewById(R.id.crudlist);
+        crud = new ArrayList<>();
+        crud.add("Insert");
+        crud.add("View Data");
+        crud.add("Search");
+        adapter=new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1,crud);
+        crudlist.setAdapter(adapter);
+        crudlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==0){
+                    startActivity(new Intent(MainActivity.this,InsertActivity.class));
+                }else if(i==1){
+                    startActivity(new Intent(MainActivity.this,ViewActivity.class));
+                }else if(i==2){
+                    startActivity(new Intent(MainActivity.this,SearchActivity.class));
+                }
+
+            }
+        });
+    }
+}
+
+insert:
+Button insert;
+    EditText Name,Designation,Phone,Email;
+    DBHelper DB = new DBHelper(this,null,null,1);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_insert);
+
+        insert=findViewById(R.id.btnInsert);
+        Name=findViewById(R.id.edname);
+        Designation=findViewById(R.id.eddesign);
+        Phone=findViewById(R.id.edPhone);
+        Email=findViewById(R.id.edEmail);
+
+        insert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String txtname=Name.getText().toString();
+                String txtdesig=Designation.getText().toString();
+                String txtphone=Phone.getText().toString();
+                String txtemail=Email.getText().toString();
+
+                Boolean checkinsertdata = DB.insertempdata(txtname,txtdesig,txtphone,txtemail);
+                if(checkinsertdata == true){
+                    Toast.makeText(InsertActivity.this, "Insert Data Successfully", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(InsertActivity.this, "Insert data not successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+}
+
+view:
+
+Button view;
+    DBHelper db = new DBHelper(this,null,null,1);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view);
+
+        view=findViewById(R.id.btnview);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor res = db.viewdata();
+                if(res.getCount()==0){
+                    Toast.makeText(ViewActivity.this, "No Entry Exist", Toast.LENGTH_SHORT).show();
+                }
+                StringBuffer buffer= new StringBuffer();
+                AlertDialog.Builder builder=new AlertDialog.Builder(ViewActivity.this);
+                while (res.moveToNext()){
+                    buffer.append("ID: "+res.getString(0)+"\n");
+                    buffer.append("Name: "+res.getString(1)+"\n");
+                    buffer.append("Designation: "+res.getString(2)+"\n");
+                    buffer.append("Phone: "+res.getString(3)+"\n");
+                    buffer.append("Email: "+res.getString(4)+"\n");
+                    buffer.append("\n");
+                }
+                builder.setCancelable(true);
+                builder.setTitle("Employee Deatil");
+                builder.setMessage(buffer.toString());
+                builder.show();
+            }
+        });
+    }
+}
+
+search:
+DBHelper db = new DBHelper(this,null,null,1);
+    Button Search;
+    EditText id;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search);
+
+        id=findViewById(R.id.editTextTextPersonName);
+        Search=findViewById(R.id.button);
+
+        Search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String txtId =id.getText().toString();
+                Cursor res= db.searchdata(txtId);
+                if(res.getCount()==0){
+                    Toast.makeText(SearchActivity.this, "No Entry Exist", Toast.LENGTH_SHORT).show();
+                }
+                StringBuffer buffer= new StringBuffer();
+                AlertDialog.Builder builder=new AlertDialog.Builder(SearchActivity.this);
+                while (res.moveToNext()){
+                    buffer.append("ID: "+res.getString(0)+"\n");
+                    buffer.append("Name: "+res.getString(1)+"\n");
+                    buffer.append("Designation: "+res.getString(2)+"\n");
+                    buffer.append("Phone: "+res.getString(3)+"\n");
+                    buffer.append("Email: "+res.getString(4)+"\n");
+                    buffer.append("\n");
+                }
+                builder.setCancelable(true);
+                builder.setTitle("Employee Deatil");
+                builder.setMessage(buffer.toString());
+                builder.show();
+            }
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+*/
