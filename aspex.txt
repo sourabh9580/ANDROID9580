@@ -1,4 +1,4 @@
-
+@*
 Microsoft.VisualStudio.Web.CodeGeneration.Design
 
 Microsoft.EntityFrameworkCore.Tools
@@ -337,4 +337,4 @@ namespace CoreWebAPIClientCS.Controllers
             return myStudent;
         }
     }
-}
+}*@
