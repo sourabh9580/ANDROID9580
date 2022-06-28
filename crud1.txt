@@ -98,6 +98,35 @@ main activity:
             }
         });
     }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.insert) {
+            Intent i = new Intent(MainActivity.this, InsertActivity.class);
+            startActivity(i);
+            return true;
+        }
+        else if (id == R.id.show) {
+            Intent i = new Intent(MainActivity.this, ShowActivity.class);
+            startActivity(i);
+            return true;
+        }
+        else
+        if (id == R.id.search) {
+            Intent i = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
 
 insert:
