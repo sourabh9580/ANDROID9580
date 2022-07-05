@@ -1,0 +1,72 @@
+<!-- controler
+@Named(value = "studentController")
+@SessionScoped
+public class studentController implements Serializable {
+
+    @EJB
+    private StudinfoFacade studinfoFacade;
+    private Studinfo studinfo = new Studinfo();
+    /**
+     * Creates a new instance of studentController
+     */
+    public studentController() {
+    }
+
+    public Studinfo getStudinfo() {
+        return studinfo;
+    }
+
+    public void setStudinfo(Studinfo studinfo) {
+        this.studinfo = studinfo;
+    }
+    
+    public List<Studinfo> findAll()
+    {
+        return this.studinfoFacade.findAll();
+    }
+    public String insert()
+    {
+        this.studinfoFacade.create(studinfo);
+        this.studinfo=new Studinfo();
+        return "index";
+    }
+    public void delete(Studinfo studinfo)
+    {
+        this.studinfoFacade.remove(studinfo);
+    }
+    public String update(Studinfo studinfo)
+    {
+        this.studinfo=studinfo;
+        return "studupdate";
+       
+    }
+    public String update()
+    {
+        this.studinfoFacade.edit(studinfo);
+        this.studinfo=new Studinfo();
+        return "index";
+    }
+}
+
+index:
+<h:link value="Insert Record" outcome="studinsert"/>
+
+<h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Action"/>
+                        </f:facet>
+                        <h:commandLink value="Delete" action="#{studentController.delete(item)}"  onclick= "return confirm('Are you sure(Y/N)')" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Action"/>
+                        </f:facet>
+                        <h:commandLink value="update" action="#{studentController.update(item)}" />
+                    </h:column>
+
+
+update index
+<h:commandButton value="Update" action="#{studentController.update()}"/>
+insert index
+ <h:commandButton value="insert" action="#{courseController.insert()}"/>
+-->
